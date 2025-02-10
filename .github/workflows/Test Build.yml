@@ -74,14 +74,7 @@ jobs:
         run: |
           echo "清空18PlusList.txt"
           echo "">$GITHUB_WORKSPACE/app/src/main/assets/18PlusList.txt
-      - name: Release Apk Sign
-        run: |
-          echo "给apk增加签名"
-          cp $GITHUB_WORKSPACE/.github/workflows/legado.jks $GITHUB_WORKSPACE/app/legado.jks
-          sed '$a\RELEASE_STORE_FILE=./legado.jks'          $GITHUB_WORKSPACE/gradle.properties -i
-          sed '$a\RELEASE_KEY_ALIAS=legado'                 $GITHUB_WORKSPACE/gradle.properties -i
-          sed '$a\RELEASE_STORE_PASSWORD=gedoor_legado'     $GITHUB_WORKSPACE/gradle.properties -i
-          sed '$a\RELEASE_KEY_PASSWORD=gedoor_legado'       $GITHUB_WORKSPACE/gradle.properties -i
+      
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -202,18 +195,7 @@ jobs:
           prerelease: true
           artifacts: ${{ github.workspace }}/apk/*.apk
 
-  lanzou:
-    needs: [ prepare, build ]
-    if: ${{ github.event_name != 'pull_request' && needs.prepare.outputs.lanzou == 'yes' }}
-    runs-on: ubuntu-latest
-    env:
-      # 登录蓝奏云后在控制台运行document.cookie
-      ylogin: ${{ secrets.LANZOU_ID }}
-      phpdisk_info: ${{ secrets.LANZOU_PSD }}
-      # 蓝奏云里的文件夹ID（阅读3测试版:2670621）
-      LANZOU_FOLDER_ID: ${{ secrets.LANZOU_FOLDER_ID }}
-      #蓝奏云分享链接
-      LANZOU_URL: ${{ secrets.LANZOU_URL }}
+ 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
