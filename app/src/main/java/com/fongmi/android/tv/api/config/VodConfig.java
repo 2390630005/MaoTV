@@ -202,7 +202,10 @@ public class VodConfig {
         if (parse == null) setParse(parses.isEmpty() ? new Parse() : parses.get(0));
         setRules(Rule.arrayFrom(object.getAsJsonArray("rules")));
         setDoh(Doh.arrayFrom(object.getAsJsonArray("doh")));
+        setHeaders(Json.safeListElement(object, "headers"));
         setFlags(Json.safeListString(object, "flags"));
+        setHosts(Json.safeListString(object, "hosts"));
+        setProxy(Json.safeListString(object, "proxy"));
         setWall(Json.safeString(object, "wallpaper"));
         setAds(Json.safeListString(object, "ads"));
     }
@@ -228,8 +231,6 @@ public class VodConfig {
     }
 
     public void setRules(List<Rule> rules) {
-        for (Rule rule : rules) if ("proxy".equals(rule.getName())) OkHttp.selector().addAll(rule.getHosts());
-        rules.remove(Rule.create("proxy"));
         this.rules = rules;
     }
 
@@ -254,12 +255,24 @@ public class VodConfig {
         return items;
     }
 
+    public void setHeaders(List<JsonElement> items) {
+        OkHttp.requestInterceptor().setHeaders(items);
+    }
+
     public List<String> getFlags() {
         return flags == null ? Collections.emptyList() : flags;
     }
 
     private void setFlags(List<String> flags) {
         this.flags.addAll(flags);
+    }
+
+    public void setHosts(List<String> hosts) {
+        OkHttp.dns().addAll(hosts);
+    }
+
+    public void setProxy(List<String> hosts) {
+        OkHttp.selector().addAll(hosts);
     }
 
     public List<String> getAds() {
