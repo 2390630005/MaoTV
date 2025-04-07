@@ -6,15 +6,15 @@ android {
     namespace 'com.fongmi.android.tv'
 
     compileSdk 35
-    flavorDimensions = ["mode", "api", "abi"]
+    flavorDimensions = ["mode", "abi"]
 
     defaultConfig {
         applicationId "com.fongmi.android.tv"
         minSdk 21
         //noinspection ExpiredTargetSdkVersion
         targetSdk 28
-        versionCode 330
-        versionName "3.3.0"
+        versionCode 349
+        versionName "3.4.9"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString(), "eventBusIndex": "com.fongmi.android.tv.event.EventIndex"]
@@ -28,12 +28,6 @@ android {
         }
         mobile {
             dimension "mode"
-        }
-        java {
-            dimension "api"
-        }
-        python {
-            dimension "api"
         }
         arm64_v8a {
             dimension "abi"
@@ -67,7 +61,7 @@ android {
 
     android.applicationVariants.configureEach { variant ->
         variant.outputs.configureEach { output ->
-            outputFileName = "${variant.productFlavors[0].name}-${variant.productFlavors[1].name}-${variant.productFlavors[2].name}.apk"
+            outputFileName = "${variant.productFlavors[0].name}-${variant.productFlavors[1].name}.apk"
         }
     }
 
@@ -91,8 +85,8 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
     implementation project(':catvod')
+    implementation project(':chaquo')
     implementation project(':quickjs')
-    pythonImplementation project(':chaquo')
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.media:media:1.7.0'
     implementation 'androidx.media3:media3-common:' + media3Version
@@ -102,6 +96,7 @@ dependencies {
     implementation 'androidx.media3:media3-datasource-okhttp:' + media3Version
     implementation 'androidx.media3:media3-datasource-rtmp:' + media3Version
     implementation 'androidx.media3:media3-decoder:' + media3Version
+    implementation 'androidx.media3:media3-effect:' + media3Version
     implementation 'androidx.media3:media3-exoplayer:' + media3Version
     implementation 'androidx.media3:media3-exoplayer-dash:' + media3Version
     implementation 'androidx.media3:media3-exoplayer-hls:' + media3Version

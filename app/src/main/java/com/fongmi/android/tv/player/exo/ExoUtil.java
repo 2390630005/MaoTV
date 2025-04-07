@@ -38,6 +38,8 @@ import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory;
 
 public class ExoUtil {
 
+    private static int ID = 10000;
+
     public static String getUa() {
         return Util.getUserAgent(App.get(), BuildConfig.APPLICATION_ID);
     }
@@ -125,7 +127,7 @@ public class ExoUtil {
 
     private static List<MediaItem.SubtitleConfiguration> getSubtitleConfigs(List<Sub> subs) {
         List<MediaItem.SubtitleConfiguration> configs = new ArrayList<>();
-        for (Sub sub : subs) configs.add(sub.getConfig());
+        for (Sub sub : subs) configs.add(sub.getConfig(++ID));
         return configs;
     }
 
